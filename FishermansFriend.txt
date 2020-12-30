@@ -4,4 +4,7 @@
 ## SavedVariables: FishermansFriendSavedVariables
 ## DependsOn: LibAddonMenu-2.0
 
+lang/en.lua
+lang/$(language).lua
+
 FishermansFriend.lua

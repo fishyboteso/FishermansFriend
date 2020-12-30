@@ -1,0 +1,6 @@
+ZO_CreateStringId("FISHERMENSFRIEND_LAKE_FISHING_HOLE", "Lake Fishing Hole")
+ZO_CreateStringId("FISHERMENSFRIEND_SALT_FISHING_HOLE", "Saltwater Fishing Hole")
+ZO_CreateStringId("FISHERMENSFRIEND_MYST_FISHING_HOLE", "Mystic Fishing Hole")
+ZO_CreateStringId("FISHERMENSFRIEND_FOUL_FISHING_HOLE", "Foul Fishing Hole")
+ZO_CreateStringId("FISHERMENSFRIEND_OILY_FISHING_HOLE", "Oily Fishing Hole")
+ZO_CreateStringId("FISHERMENSFRIEND_RIVR_FISHING_HOLE", "River Fishing Hole")

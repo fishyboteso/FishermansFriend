@@ -1,0 +1,6 @@
+SafeAddString(FISHERMENSFRIEND_LAKE_FISHING_HOLE, "Fischgrund (Seewasser)",	0)
+SafeAddString(FISHERMENSFRIEND_SALT_FISHING_HOLE, "Fischgrund (Salzwasser)", 	0)
+SafeAddString(FISHERMENSFRIEND_MYST_FISHING_HOLE, "Fischgrund (Mythenwasser)",0)
+SafeAddString(FISHERMENSFRIEND_FOUL_FISHING_HOLE, "Fischgrund (Brackwasser)", 0)
+SafeAddString(FISHERMENSFRIEND_OILY_FISHING_HOLE, "Fischgrund (Ölwasser)", 	0)
+SafeAddString(FISHERMENSFRIEND_RIVR_FISHING_HOLE, "Fischgrund (Flusswasser)", 0)

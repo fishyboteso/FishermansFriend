@@ -100,8 +100,11 @@ end
 -- 8, Minnow, Lake Bait
 -- 9, Fish Roe, Foul Bait
 local function FishermansFriend_OnEffectivelyShown(interactableName, additionalInfo)
-    if additionalInfo == ADDITIONAL_INTERACT_INFO_FISHING_NODE and setBait == true then -- Only try to set bait whenever we're looking at fishing hole
-        if interactableName == "Lake Fishing Hole" then
+    -- Only try to set bait whenever we're looking at fishing hole
+    if additionalInfo == ADDITIONAL_INTERACT_INFO_FISHING_NODE and setBait == true then
+
+        --Lake Bait needed
+        if interactableName == GetString(FISHERMENSFRIEND_LAKE_FISHING_HOLE) then
             local regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT_LAKE_GUTS_ITEMID)
             local alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT_LAKE_MINNOW_ITEMID)
 
@@ -118,9 +121,10 @@ local function FishermansFriend_OnEffectivelyShown(interactableName, additionalI
                     SetFishingLure(BAIT_LAKE_MINNOW)
                 end
             end
-
             setBait = false
-        elseif interactableName == "Saltwater Fishing Hole" then
+
+        --Salt or Mystic Bait needed
+        elseif interactableName == GetString(FISHERMENSFRIEND_SALT_FISHING_HOLE) or interactableName == GetString(FISHERMENSFRIEND_MYST_FISHING_HOLE) then
             local regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT_SALTWATER_WORMS_ITEMID)
             local alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT_SALTWATER_CHUB_ITEMID)
 
@@ -137,9 +141,10 @@ local function FishermansFriend_OnEffectivelyShown(interactableName, additionalI
                     SetFishingLure(BAIT_SALTWATER_CHUB)
                 end
             end
-
             setBait = false
-        elseif interactableName == "Foul Fishing Hole" then
+
+        --Foul or Oily Bait needed
+        elseif interactableName == GetString(FISHERMENSFRIEND_FOUL_FISHING_HOLE) or interactableName == GetString(FISHERMENSFRIEND_OILY_FISHING_HOLE) then
             local regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT_FOUL_CRAWLERS_ITEMID)
             local alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT_FOUL_ROE_ITEMID)
 
@@ -156,9 +161,10 @@ local function FishermansFriend_OnEffectivelyShown(interactableName, additionalI
                     SetFishingLure(BAIT_FOUL_ROE)
                 end
             end
-
             setBait = false
-        elseif interactableName == "River Fishing Hole" then
+
+        --River Bait needed
+        elseif interactableName == GetString(FISHERMENSFRIEND_RIVR_FISHING_HOLE) then
             local regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT_RIVER_INSECT_ITEMID)
             local alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT_RIVER_SHAD_ITEMID)
 
@@ -175,13 +181,13 @@ local function FishermansFriend_OnEffectivelyShown(interactableName, additionalI
                     SetFishingLure(BAIT_RIVER_SHAD)
                 end
             end
-
             setBait = false
+
         end
     end
 end
 
---Source: VotansFishFillet v1.6.2
+--Source: VotansFishFillet
 local function CountBag(bagId, itemId)
     local slotIndex = ZO_GetNextBagSlotIndex(bagId, nil)
     local stack, _, count
@@ -196,7 +202,7 @@ local function CountBag(bagId, itemId)
     end
     return sum
 end
- 
+
 function FishermansFriend.GetItemQuantity(itemId)
     local quantity = 0
     if HasCraftBagAccess then
@@ -212,7 +218,8 @@ end
 function FishermansFriend.OnAddOnLoaded(event, addonName)
     -- The event fires each time *any* addon loads - but we only care about when our own addon loads.
     if addonName == FishermansFriend.name then
-    FishermansFriend:Initialize()
+        EVENT_MANAGER:UnregisterForEvent(FishermansFriend.name, EVENT_ADD_ON_LOADED)
+        FishermansFriend:Initialize()
     end
 end
 
