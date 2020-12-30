@@ -37,6 +37,7 @@ BAIT_SALTWATER_CHUB_ITEMID = 42875
 function FishermansFriend:Initialize()
     FishermansFriend.SavedVariables = ZO_SavedVars:New("FishermansFriendSavedVariables", 1, nil, FishermansFriend.defaults)
     FishermansFriend.CreateSettings()
+    setBait = true
 end
 
 --Setting Menu
@@ -180,10 +181,30 @@ local function FishermansFriend_OnEffectivelyShown(interactableName, additionalI
     end
 end
 
+--Source: VotansFishFillet v1.6.2
+local function CountBag(bagId, itemId)
+    local slotIndex = ZO_GetNextBagSlotIndex(bagId, nil)
+    local stack, _, count
+    local sum = 0
+    while slotIndex do
+        local i = GetItemId(bagId, slotIndex)
+        if i == itemId then
+            _, count = GetItemInfo(bagId, slotIndex)
+            sum = sum + count
+        end
+        slotIndex = ZO_GetNextBagSlotIndex(bagId, slotIndex)
+    end
+    return sum
+end
+ 
 function FishermansFriend.GetItemQuantity(itemId)
-    local icon, qnt = GetItemInfo(BAG_VIRTUAL, itemId)
-    local icon, qnt2 = GetItemInfo(BAG_BACKPACK, itemId)
-    if HasCraftBagAccess() then return (qnt + qnt2) else return qnt2 end
+    local quantity = 0
+    if HasCraftBagAccess then
+        quantity = CountBag(BAG_VIRTUAL, itemId) + CountBag(BAG_BACKPACK, itemId)
+    else
+        quantity = CountBag(BAG_BACKPACK, itemId)
+    end
+    return quantity
 end
 
 -- Then we create an event handler function which will be called when the "addon loaded" event
