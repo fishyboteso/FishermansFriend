@@ -53,7 +53,7 @@ function FishermansFriend.CreateSettings()
         optionsData[#optionsData + 1] = {
             type = "checkbox",
             name = GetString(FISHERMANSFRIEND_CNF_SET),
-            default = true,
+            default = FishermansFriend.defaults.filtered,
             disabled = false,
             getFunc = function() return FishermansFriend.SavedVariables.filtered end,
             setFunc = function(value) FishermansFriend.SavedVariables.filtered = value end
@@ -61,7 +61,7 @@ function FishermansFriend.CreateSettings()
         optionsData[#optionsData + 1] = {
             type = "checkbox",
             name = GetString(FISHERMANSFRIEND_CNF_MSG),
-            default = true,
+            default = FishermansFriend.defaults.msg,
             disabled = false,
             getFunc = function() return FishermansFriend.SavedVariables.msg end,
             setFunc = function(value) FishermansFriend.SavedVariables.msg = value end
