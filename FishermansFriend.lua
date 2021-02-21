@@ -20,6 +20,7 @@ local BAIT = {
 
 FishermansFriend = {
     name = "FishermansFriend",
+    settingsName = "Fisherman's Friend",
     delay = false,
     defaults = {
         filtered = true
@@ -36,8 +37,8 @@ function FishermansFriend.CreateSettings()
 
     local panelData = {
         type = "panel",
-        name = "Fisherman's Friend",
-        displayName = "Fisherman's Friend",
+        name = FishermansFriend.settingsName,
+        displayName = FishermansFriend.settingsName,
         author = "GameDude, Sem",
         registerForRefresh = true,
         registerForDefaults = true,
@@ -45,30 +46,14 @@ function FishermansFriend.CreateSettings()
     local panel = LAM:RegisterAddonPanel(panelName, panelData)
     local optionsData = {}
         optionsData[#optionsData + 1] = {
-            type = "header",
-            name = "Fisherman's Friend Settings",
-        }
-        optionsData[#optionsData + 1] = {
             type = "description",
-            text = "You can change whether or not you want to use the alternative baits first (Shad, Chub, Fish Roe, and Minnow) over the regular baits (Worms, Guys, Insect Parts, Crawlers.",
-        }
-        optionsData[#optionsData + 1] = {
-            type = "button",
-            name = "Close Settings",
-            width = "half",
-            func = function()
-                SCENE_MANAGER:ShowBaseScene()
-            end,
-        }
-        optionsData[#optionsData + 1] = {
-            type = "header",
-            name = "Default Items"
+            text = GetString(FISHERMENSFRIEND_CNF_DESCRIPTION),
         }
         optionsData[#optionsData + 1] = {
             type = "checkbox",
-            name = "Use Alternative Baits First",
+            name = GetString(FISHERMENSFRIEND_CNF_SET),
             default = true,
-            width = "half",
+            --width = "half",
             disabled = false,
             getFunc = function() return FishermansFriend.SavedVariables.filtered end,
             setFunc = function(value) FishermansFriend.SavedVariables.filtered = value end
@@ -171,6 +156,7 @@ local function FishermansFriend_OnAction()
 
     --if alternativeBaitQuantity + regularBaitQuantity == 0 then
             --TODO rewrite text
+            --GetString(FISHERMENSFRIEND_NO_BAIT)
     --end
 end
 
