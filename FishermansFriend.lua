@@ -23,7 +23,8 @@ FishermansFriend = {
     settingsName = "Fisherman's Friend",
     delay = false,
     defaults = {
-        filtered = true
+        filtered = true,
+        msg      = false
     }
 }
 
@@ -47,16 +48,23 @@ function FishermansFriend.CreateSettings()
     local optionsData = {}
         optionsData[#optionsData + 1] = {
             type = "description",
-            text = GetString(FISHERMENSFRIEND_CNF_DESCRIPTION),
+            text = GetString(FISHERMENSFRIEND_CNF_DESCRIPTION)
         }
         optionsData[#optionsData + 1] = {
             type = "checkbox",
             name = GetString(FISHERMENSFRIEND_CNF_SET),
             default = true,
-            --width = "half",
             disabled = false,
             getFunc = function() return FishermansFriend.SavedVariables.filtered end,
             setFunc = function(value) FishermansFriend.SavedVariables.filtered = value end
+        }
+        optionsData[#optionsData + 1] = {
+            type = "checkbox",
+            name = GetString(FISHERMENSFRIEND_CNF_MSG),
+            default = true,
+            disabled = false,
+            getFunc = function() return FishermansFriend.SavedVariables.msg end,
+            setFunc = function(value) FishermansFriend.SavedVariables.msg = value end
         }
 
     LAM:RegisterOptionControls(panelName, optionsData)
@@ -74,12 +82,13 @@ local function FishermansFriend_OnAction()
     local _, interactableName, _, _, additionalInteractInfo, _, _, _ = GetGameCameraInteractableActionInfo()
     if additionalInteractInfo ~= ADDITIONAL_INTERACT_INFO_FISHING_NODE then return end
 
-    regularBaitQuantity, alternativeBaitQuantity = 0, 0
+    local regularBaitQuantity = 0
+    local alternativeBaitQuantity = 0
 
     --Lake Bait needed
     if interactableName == GetString(FISHERMENSFRIEND_LAKE_FISHING_HOLE) then
-        local regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.LAKE.REG[2])
-        local alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.LAKE.ALT[2])
+        regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.LAKE.REG[2])
+        alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.LAKE.ALT[2])
 
         if FishermansFriend.SavedVariables.filtered == true then
             if alternativeBaitQuantity > 0 then
@@ -97,8 +106,8 @@ local function FishermansFriend_OnAction()
 
     --Salt or Mystic Bait needed
     elseif interactableName == GetString(FISHERMENSFRIEND_SALT_FISHING_HOLE) or interactableName == GetString(FISHERMENSFRIEND_MYST_FISHING_HOLE) then
-        local regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.SALT.REG[2])
-        local alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.SALT.ALT[2])
+        regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.SALT.REG[2])
+        alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.SALT.ALT[2])
 
         if FishermansFriend.SavedVariables.filtered == true then
             if alternativeBaitQuantity > 0 then
@@ -116,8 +125,8 @@ local function FishermansFriend_OnAction()
 
     --Foul or Oily Bait needed
     elseif interactableName == GetString(FISHERMENSFRIEND_FOUL_FISHING_HOLE) or interactableName == GetString(FISHERMENSFRIEND_OILY_FISHING_HOLE) then
-        local regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.FOUL.REG[2])
-        local alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.FOUL.ALT[2])
+        regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.FOUL.REG[2])
+        alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.FOUL.ALT[2])
 
         if FishermansFriend.SavedVariables.filtered == true then
             if alternativeBaitQuantity > 0 then
@@ -135,8 +144,8 @@ local function FishermansFriend_OnAction()
 
     --River Bait needed
     elseif interactableName == GetString(FISHERMENSFRIEND_RIVR_FISHING_HOLE) then
-        local regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.RIVR.REG[2])
-        local alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.RIVR.ALT[2])
+        regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.RIVR.REG[2])
+        alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.RIVR.ALT[2])
 
         if FishermansFriend.SavedVariables.filtered == true then
             if alternativeBaitQuantity > 0 then
@@ -154,10 +163,11 @@ local function FishermansFriend_OnAction()
 
     end
 
-    --if alternativeBaitQuantity + regularBaitQuantity == 0 then
-            --TODO rewrite text
-            --GetString(FISHERMENSFRIEND_NO_BAIT)
-    --end
+    if FishermansFriend.SavedVariables.msg and alternativeBaitQuantity + regularBaitQuantity == 0 then
+        ZO_CreateStringId("SI_HOLD_TO_SELECT_BAIT", GetString(FISHERMENSFRIEND_NO_BAIT))
+    else
+        ZO_CreateStringId("SI_HOLD_TO_SELECT_BAIT", GetString(FISHERMENSFRIEND_NO_BAIT_RST))
+    end
 end
 
 

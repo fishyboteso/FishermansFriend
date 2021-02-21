@@ -7,4 +7,6 @@ SafeAddString(FISHERMENSFRIEND_RIVR_FISHING_HOLE, "Fischgrund (Flusswasser)", 0)
 
 SafeAddString(FISHERMENSFRIEND_CNF_DESCRIPTION, "Hier kannst du einstellen ob zuerst die einfachen (Innereien, Insektenstücke, Krabbler, Würmer) oder die alternativen Köder (Bitterfisch, Blaubarsch, Döbel, Fischrogen) verwendet werden sollen.", 0)
 SafeAddString(FISHERMENSFRIEND_CNF_SET, "Zuerst alternativen Köder verwenden:", 0)
+SafeAddString(FISHERMENSFRIEND_CNF_MSG, "Benachrichtigung wenn geeigneter Köder fehlt:")
 SafeAddString(FISHERMENSFRIEND_NO_BAIT, "Kein geeigneter Köder verfügbar!", 0)
+SafeAddString(FISHERMENSFRIEND_NO_BAIT_RST, "Gedrückt halten, um einen Köder zu wählen.", 1)
