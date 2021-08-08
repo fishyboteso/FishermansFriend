@@ -5,7 +5,7 @@ ZO_CreateStringId("FISHERMANSFRIEND_FOUL_FISHING_HOLE", "Foul Fishing Hole")
 ZO_CreateStringId("FISHERMANSFRIEND_OILY_FISHING_HOLE", "Oily Fishing Hole")
 ZO_CreateStringId("FISHERMANSFRIEND_RIVR_FISHING_HOLE", "River Fishing Hole")
 
-ZO_CreateStringId("FISHERMANSFRIEND_CNF_DESCRIPTION", "You can change whether or not you want to use the alternative Baits first (Shad, Chub, Fish Roe, and Minnow) over the regular Baits (Worms, Guys, Insect Parts, Crawlers).")
+ZO_CreateStringId("FISHERMANSFRIEND_CNF_DESCRIPTION", "You can change whether or not you want to use the alternative Baits first (Shad, Chub, Fish Roe, and Minnow) over the regular Baits (Worms, Guts, Insect Parts, Crawlers).")
 ZO_CreateStringId("FISHERMANSFRIEND_CNF_SET", "Use alternative Bait first:")
 ZO_CreateStringId("FISHERMANSFRIEND_CNF_MSG", "Show message if no bait available:")
 ZO_CreateStringId("FISHERMANSFRIEND_NO_BAIT", "No appropriate Bait available!")
