@@ -28,7 +28,7 @@ FishermansFriend = {
     }
 }
 
---local logger = LibDebugLogger(FishermansFriend.name)
+local logger = LibDebugLogger(FishermansFriend.name)
 local LAM = LibAddonMenu2
 
 
@@ -71,6 +71,8 @@ function FishermansFriend.CreateSettings()
 end
 
 
+
+
 local function FishermansFriend_OnAction()
     if FishermansFriend.delay then return end
     EVENT_MANAGER:RegisterForUpdate(FishermansFriend.name .. "Delay", 300, function()
@@ -85,6 +87,7 @@ local function FishermansFriend_OnAction()
     local regularBaitQuantity = 0
     local alternativeBaitQuantity = 0
 
+	logger:Warn("FishermansFriend interactableName: %s", interactableName)
     --Lake Bait needed
     if interactableName == GetString(FISHERMANSFRIEND_LAKE_FISHING_HOLE) then
         regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.LAKE.REG[2])
