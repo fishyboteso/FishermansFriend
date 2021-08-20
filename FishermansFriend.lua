@@ -172,29 +172,8 @@ end
 
 
 function FishermansFriend.GetItemQuantity(itemId)
-    --Source: VotansFishFillet
-    function CountBag(bagId, itemId)
-        local slotIndex = ZO_GetNextBagSlotIndex(bagId, nil)
-        local stack, _, count
-        local sum = 0
-        while slotIndex do
-            local i = GetItemId(bagId, slotIndex)
-            if i == itemId then
-                _, count = GetItemInfo(bagId, slotIndex)
-                sum = sum + count
-            end
-            slotIndex = ZO_GetNextBagSlotIndex(bagId, slotIndex)
-        end
-        return sum
-    end
-
-    local quantity = 0
-    if HasCraftBagAccess then
-        quantity = CountBag(BAG_VIRTUAL, itemId) + CountBag(BAG_BACKPACK, itemId)
-    else
-        quantity = CountBag(BAG_BACKPACK, itemId)
-    end
-    return quantity
+    quantBag, _, quantVirt = GetItemLinkStacks(itemId)
+    return quantBag + quantVirt
 end
 
 
@@ -206,5 +185,6 @@ function FishermansFriend.OnAddOnLoaded(event, addonName)
     FishermansFriend.CreateSettings()
     ZO_PreHookHandler(RETICLE.interact, "OnEffectivelyShown", FishermansFriend_OnAction)
 end
+
 
 EVENT_MANAGER:RegisterForEvent(FishermansFriend.name, EVENT_ADD_ON_LOADED, FishermansFriend.OnAddOnLoaded)
