@@ -189,11 +189,7 @@ function FishermansFriend.GetItemQuantity(itemId)
     end
 
     local quantity = 0
-    if HasCraftBagAccess then
-        quantity = CountBag(BAG_VIRTUAL, itemId) + CountBag(BAG_BACKPACK, itemId)
-    else
-        quantity = CountBag(BAG_BACKPACK, itemId)
-    end
+    quantity = CountBag(BAG_VIRTUAL, itemId) + CountBag(BAG_BACKPACK, itemId)
     return quantity
 end
 
