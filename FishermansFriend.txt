@@ -1,9 +1,10 @@
 ## Title: Fisherman's Friend
-## Description: Auto-equips the best bait at a fishing hole. Version 1.4.5
-## Author: GameDude, Sem
-## APIVersion: 101032 101033
+## Description: Auto-equips the best bait at a fishing hole. |c000088Version 1.6|r
+## Author: |c0000C0Sem|r, GameDude
+## APIVersion: 101038 101039
 ## SavedVariables: FishermansFriendSavedVariables
-## Version: 1.4.5
+## Version: 1.6
+## AddOnVersion: 16
 ## DependsOn: LibAddonMenu-2.0
 ## OptionalDependsOn: LibDebugLogger>=180
 

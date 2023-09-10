@@ -1,21 +1,22 @@
 local BAIT = {
-    --lureID, ItemID
+    --lureID
     LAKE = {
-        REG = {2,42870}, --guts
-        ALT = {8,42876}  --minnow
+        REG = 2, --guts
+        ALT = 8  --minnow
     },
     FOUL = {
-        REG = {3,42871}, --crawlers
-        ALT = {9,42873}  --roe
+        REG = 3, --crawlers
+        ALT = 9  --roe
     },
     RIVR = {
-        REG = {4,42872}, --insects
-        ALT = {6,42874}  --shad
+        REG = 4, --insects
+        ALT = 6  --shad
     },
     SALT = {
-        REG = {5,42869}, --worms
-        ALT = {7,42875}  --chub
-    }
+        REG = 5, --worms
+        ALT = 7  --chub
+    },
+    SIMPLE = 1 --simple bait
 }
 
 FishermansFriend = {
@@ -32,7 +33,56 @@ FishermansFriend = {
 local LAM = LibAddonMenu2
 
 
---Setting Menu
+local function FishermansFriend_GetItemQuantity(lureID)
+    local _, _, stack = GetFishingLureInfo(lureID)
+    return stack
+end
+
+
+local function FishermansFriend_EquipBait(baittype)
+    if FishermansFriend_GetItemQuantity(baittype.ALT) > 0 and FishermansFriend.SavedVariables.filtered == true then
+        SetFishingLure(baittype.ALT)
+    elseif FishermansFriend_GetItemQuantity(baittype.REG) > 0 then
+        SetFishingLure(baittype.REG)
+    elseif FishermansFriend_GetItemQuantity(BAIT.SIMPLE) > 0 then
+        SetFishingLure(BAIT.SIMPLE)
+    else
+        if FishermansFriend.SavedVariables.msg then
+            ZO_CreateStringId("SI_HOLD_TO_SELECT_BAIT", GetString(FISHERMANSFRIEND_NO_BAIT))
+        else
+            ZO_CreateStringId("SI_HOLD_TO_SELECT_BAIT", GetString(FISHERMANSFRIEND_NO_BAIT_RST))
+        end
+    end
+end
+
+
+local function FishermansFriend_OnAction()
+    if FishermansFriend.delay then return end
+    EVENT_MANAGER:RegisterForUpdate(FishermansFriend.name .. "Delay", 300, function()
+        FishermansFriend.delay = false
+        EVENT_MANAGER:UnregisterForUpdate(FishermansFriend.name .. "Delay")
+    end)
+    FishermansFriend.delay = true
+
+    local _, interactableName, _, _, additionalInteractInfo, _, _, _ = GetGameCameraInteractableActionInfo()
+    if additionalInteractInfo ~= ADDITIONAL_INTERACT_INFO_FISHING_NODE then return end
+
+    --Lake Bait
+    if interactableName == GetString(FISHERMANSFRIEND_LAKE_FISHING_HOLE) then
+        FishermansFriend_EquipBait(BAIT.LAKE)
+    --Salt or Mystic Bait
+    elseif interactableName == GetString(FISHERMANSFRIEND_SALT_FISHING_HOLE) or interactableName == GetString(FISHERMANSFRIEND_MYST_FISHING_HOLE) then
+        FishermansFriend_EquipBait(BAIT.SALT)
+    --Foul or Oily Bait
+    elseif interactableName == GetString(FISHERMANSFRIEND_FOUL_FISHING_HOLE) or interactableName == GetString(FISHERMANSFRIEND_OILY_FISHING_HOLE) then
+        FishermansFriend_EquipBait(BAIT.FOUL)
+    --River Bait
+    elseif interactableName == GetString(FISHERMANSFRIEND_RIVR_FISHING_HOLE) then
+        FishermansFriend_EquipBait(BAIT.RIVR)
+    end
+end
+
+
 function FishermansFriend.CreateSettings()
     local panelName = "FishermansFriendSettingsPanel"
 
@@ -40,7 +90,7 @@ function FishermansFriend.CreateSettings()
         type = "panel",
         name = FishermansFriend.settingsName,
         displayName = FishermansFriend.settingsName,
-        author = "GameDude, Sem",
+        author = "Sem, GameDude",
         registerForRefresh = true,
         registerForDefaults = true,
     }
@@ -68,129 +118,6 @@ function FishermansFriend.CreateSettings()
         }
 
     LAM:RegisterOptionControls(panelName, optionsData)
-end
-
-
-local function FishermansFriend_OnAction()
-    if FishermansFriend.delay then return end
-    EVENT_MANAGER:RegisterForUpdate(FishermansFriend.name .. "Delay", 300, function()
-        FishermansFriend.delay = false
-        EVENT_MANAGER:UnregisterForUpdate(FishermansFriend.name .. "Delay")
-    end)
-    FishermansFriend.delay = true
-
-    local _, interactableName, _, _, additionalInteractInfo, _, _, _ = GetGameCameraInteractableActionInfo()
-    if additionalInteractInfo ~= ADDITIONAL_INTERACT_INFO_FISHING_NODE then return end
-
-    local regularBaitQuantity = 0
-    local alternativeBaitQuantity = 0
-
-    --Lake Bait needed
-    if interactableName == GetString(FISHERMANSFRIEND_LAKE_FISHING_HOLE) then
-        regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.LAKE.REG[2])
-        alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.LAKE.ALT[2])
-
-        if FishermansFriend.SavedVariables.filtered == true then
-            if alternativeBaitQuantity > 0 then
-                SetFishingLure(BAIT.LAKE.ALT[1])
-            else
-                SetFishingLure(BAIT.LAKE.REG[1])
-            end
-        else
-            if regularBaitQuantity > 0 then
-                SetFishingLure(BAIT.LAKE.REG[1])
-            else
-                SetFishingLure(BAIT.LAKE.ALT[1])
-            end
-        end
-
-    --Salt or Mystic Bait needed
-    elseif interactableName == GetString(FISHERMANSFRIEND_SALT_FISHING_HOLE) or interactableName == GetString(FISHERMANSFRIEND_MYST_FISHING_HOLE) then
-        regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.SALT.REG[2])
-        alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.SALT.ALT[2])
-
-        if FishermansFriend.SavedVariables.filtered == true then
-            if alternativeBaitQuantity > 0 then
-                SetFishingLure(BAIT.SALT.ALT[1])
-            else
-                SetFishingLure(BAIT.SALT.REG[1])
-            end
-        else
-            if regularBaitQuantity > 0 then
-                SetFishingLure(BAIT.SALT.REG[1])
-            else
-                SetFishingLure(BAIT.SALT.ALT[1])
-            end
-        end
-
-    --Foul or Oily Bait needed
-    elseif interactableName == GetString(FISHERMANSFRIEND_FOUL_FISHING_HOLE) or interactableName == GetString(FISHERMANSFRIEND_OILY_FISHING_HOLE) then
-        regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.FOUL.REG[2])
-        alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.FOUL.ALT[2])
-
-        if FishermansFriend.SavedVariables.filtered == true then
-            if alternativeBaitQuantity > 0 then
-                SetFishingLure(BAIT.FOUL.ALT[1])
-            else
-                SetFishingLure(BAIT.FOUL.REG[1])
-            end
-        else
-            if regularBaitQuantity > 0 then
-                SetFishingLure(BAIT.FOUL.REG[1])
-            else
-                SetFishingLure(BAIT.FOUL.ALT[1])
-            end
-        end
-
-    --River Bait needed
-    elseif interactableName == GetString(FISHERMANSFRIEND_RIVR_FISHING_HOLE) then
-        regularBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.RIVR.REG[2])
-        alternativeBaitQuantity = FishermansFriend.GetItemQuantity(BAIT.RIVR.ALT[2])
-
-        if FishermansFriend.SavedVariables.filtered == true then
-            if alternativeBaitQuantity > 0 then
-                SetFishingLure(BAIT.RIVR.ALT[1])
-            else
-                SetFishingLure(BAIT.RIVR.REG[1])
-            end
-        else
-            if regularBaitQuantity > 0 then
-                SetFishingLure(BAIT.RIVR.REG[1])
-            else
-                SetFishingLure(BAIT.RIVR.ALT[1])
-            end
-        end
-
-    end
-
-    if FishermansFriend.SavedVariables.msg and alternativeBaitQuantity + regularBaitQuantity == 0 then
-        ZO_CreateStringId("SI_HOLD_TO_SELECT_BAIT", GetString(FISHERMANSFRIEND_NO_BAIT))
-    else
-        ZO_CreateStringId("SI_HOLD_TO_SELECT_BAIT", GetString(FISHERMANSFRIEND_NO_BAIT_RST))
-    end
-end
-
-
-function FishermansFriend.GetItemQuantity(itemId)
-    --Source: VotansFishFillet
-    function CountBag(bagId, itemId)
-        local slotIndex = ZO_GetNextBagSlotIndex(bagId, nil)
-        local stack, _, count
-        local sum = 0
-        while slotIndex do
-            local i = GetItemId(bagId, slotIndex)
-            if i == itemId then
-                _, count = GetItemInfo(bagId, slotIndex)
-                sum = sum + count
-            end
-            slotIndex = ZO_GetNextBagSlotIndex(bagId, slotIndex)
-        end
-        return sum
-    end
-
-    local quantity = 0
-    quantity = CountBag(BAG_VIRTUAL, itemId) + CountBag(BAG_BACKPACK, itemId)
-    return quantity
 end
 
 
